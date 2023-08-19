@@ -2,9 +2,11 @@
 
 
 // Setter 
+
 void Engine::setGameOver(bool gameOverVariable) {
 	gameOver = gameOverVariable;
 }
+
 void Engine::setScreenWidth(int screenWidthVariable) {
 	screenWidth = screenWidthVariable;
 }
@@ -85,21 +87,21 @@ void Engine::initializeEngine(const int screenWidthVariable, const int screenHei
 	setScreenHeight(screenHeightVariable);
 }
 
-void Engine::setup(eDirection dir_variable)
+void Engine::setup(eDirection* dir_variable)
 {
 	setGameOver(false);
-	dir_variable = STOP;
+	*dir_variable =	STOP;
 	setX(getScreenWidth() / 2);
 	setY(getScreenHeight() / 2);
-	setFruitX(rand() % getScreenWidth());
-	setFruitY(rand() % getScreenHeight());
+	setFruitX(rand() % getScreenWidth() + 1);
+	setFruitY(rand() % getScreenHeight()+1);
 	setScore(0);
 
 }
 
-
-eDirection Engine::input(eDirection dir_variable)
+eDirection Engine::input(eDirection* dir_variable)
 {
+
 	//I fthe keyboard key is pressed
 	if (_kbhit())
 	{
@@ -108,20 +110,26 @@ eDirection Engine::input(eDirection dir_variable)
 		{
 		case 'z':
 		case 'Z':
-		
-			dir_variable = UP;
+		case 'w':
+		case 'W':
+
+			*dir_variable = UP;
 			break;
+
 		case 'q':
 		case 'Q':
-			dir_variable = LEFT;
+		case 'a':
+		case 'A':
+			*dir_variable = LEFT;
 			break;
 		case 'd':
 		case 'D':
-			dir_variable = RIGHT;
+		
+			*dir_variable = RIGHT;
 			break;
 		case 's':
 		case 'S':
-			dir_variable = DOWN;
+			*dir_variable = DOWN;
 			break;
 		case 'x':
 		case 'X':
@@ -131,9 +139,7 @@ eDirection Engine::input(eDirection dir_variable)
 			break;
 		}
 	}
-
-	return dir_variable;
-
+	return *dir_variable;
 
 
 }
@@ -154,6 +160,7 @@ void Engine::logic(eDirection dir_variable)
 		previousValueX = previousValue2X;
 		previousValueY = previousValue2Y;
 	}
+	
 	switch (dir_variable)
 	{
 	case UP:
@@ -179,7 +186,7 @@ void Engine::logic(eDirection dir_variable)
 		break;
 
 	}
-	if ((getX() > getScreenWidth() - 2 || getX() < 0) || (getY() > getScreenHeight() - 1 || getY() < 0))
+	if ((getX() > getScreenWidth() - 2 || getX() < 2) || (getY() > getScreenHeight() - 2 || getY() < 2 ))
 
 		setGameOver(true);
 

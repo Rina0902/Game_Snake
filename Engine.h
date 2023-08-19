@@ -3,7 +3,7 @@
 #include <conio.h>
 #include <iostream>
 
-enum eDirection { STOP = 0, LEFT, RIGHT, UP, DOWN };
+enum eDirection { STOP = 0, LEFT , RIGHT , UP , DOWN };
 
 using namespace std;
 
@@ -11,22 +11,22 @@ class Engine
 {
 private:
 	
-	int x, y, fruitX, fruitY, score;
-	int tailX[100], tailY[100];
+	int x = 0, y = 0, fruitX = 0, fruitY = 0, score = 0;
+	int tailX[100] , tailY[100] ;
 	int numberTail = 0;
 
-	int screenWidth;
-	int screenHeight;
+	int screenWidth ;
+	int screenHeight ;
 
-	bool gameOver;
+	bool gameOver ;
 
 public:
 
 	
 
 	void initializeEngine(const int screenWidthVariable, const int screenHeightVariable);
-	void setup(eDirection dir_variable);
-	eDirection input(eDirection dir_variable);
+	void setup(eDirection* dir_variable);
+	eDirection input(eDirection* dir_variable);
 	void logic(eDirection dir_variable);
 
 	
