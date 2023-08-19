@@ -1,27 +1,24 @@
-#include "Render.h"
-#include "Engine.h"
+#include "snake.h"
 
-Render renderGame;
-Engine gameEngine;
+GameParameters game_param;
+Snake snake_var;
+Fruit fruit_var;
 enum eDirection dir;
-
-
-
 
 
 int main()
 {
 
-	gameEngine.initializeEngine(20, 20);
-	gameEngine.setup(&dir);
+	initializeGame(&game_param, 20, 20);
+	setup(&game_param , &snake_var , &fruit_var , &dir);
 	
-	while (!gameEngine.getGameOver())
+	while (!game_param.gameOver)
 	{
 		
-		renderGame.draw(&gameEngine);
-		Sleep(100);
-		dir = gameEngine.input(&dir);
-		gameEngine.logic(dir);
+		draw(&game_param, &snake_var, &fruit_var);
+		Sleep(80);
+		dir = input(&game_param , &dir);
+		logic(&game_param, &snake_var, dir);
 
 	}
 	cout << endl;

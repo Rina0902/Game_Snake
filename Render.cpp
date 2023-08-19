@@ -11,26 +11,26 @@ void gotoxy(int x, int y)
 void Render::draw(Engine* E)
 {
 
-	bool print = false;
-	for (int32_t i = 0; i < E->getScreenHeight(); i++)
+	char print = 'f';
+	for (int8_t i = 0; i < E->getScreenHeight(); i++)
 	{
-		for (int32_t j = 0; j < E->getScreenWidth(); j++)
+		for (int8_t j = 0; j < E->getScreenWidth(); j++)
 		{
-			print = false;
+			print = 'f';
 			
 		
 			if (i == 1 || (i == E->getScreenWidth() - 1) )
 			{
 				gotoxy(j, i);
 				printf("#");
-				print = true;
+				print = 't';
 			}
 			
 			if (j == 0 || j == E->getScreenHeight() - 1)
 			{
 				gotoxy(j, i);
 				printf("#");
-				print = true;
+				print = 't';
 			}
 			
 			
@@ -38,7 +38,7 @@ void Render::draw(Engine* E)
 			{
 				gotoxy(j, i);
 				printf("O");
-				print = true;
+				print = 't';
 			
  
 			}
@@ -58,12 +58,12 @@ void Render::draw(Engine* E)
 					{
 						gotoxy(j, i);
 						printf("o");
-						print = true;
+						print = 't';
 					}
 				}
 			}
 			
-			if (!print)
+			if (print == 'f')
 			{
 
 				printf(" ");
@@ -80,8 +80,6 @@ void Render::draw(Engine* E)
 		
 		E->setFruitX((rand() % (E->getScreenWidth() - 1)) + 1 );
 		E->setFruitY((rand() % (E->getScreenHeight() - 1)) + 2 );
-		cout << "Fruit X : " << E->getFruitX() << endl;
-		cout << "Fruit Y :  " << E->getFruitY() << endl;
 		E->setScore(E->getScore() + 10);
 		E->setNumberTail(E->getNumberTail() + 1);
 
@@ -89,7 +87,11 @@ void Render::draw(Engine* E)
 	}
 
 	cout << endl;
-	//cout << "Your Score is " << E->getScore() << endl;
+	gotoxy(0, 21);
+	printf("Your Score is : ");
+	cout << E->getScore() << endl;
+	gotoxy(0, 23);
+	printf("Press X to exit the game. ");
 
 
 }
