@@ -1,24 +1,33 @@
 #include "snake.h"
 
-GameParameters game_param;
-Snake snake_var;
-Fruit fruit_var;
+GameParameters* parameters = new GameParameters();
+Snake* snakeObject = new Snake();
+Fruit* fruitObject = new Fruit();
+State* stateObject = new State();
 enum eDirection dir;
 
 
 int main()
 {
 
-	initializeGame(&game_param, 20, 20);
-	setup(&game_param , &snake_var , &fruit_var , &dir);
+	initializeGame(parameters, 20, 20);
+	setup(parameters, stateObject, snakeObject, fruitObject, &dir);
 	
-	while (!game_param.gameOver)
+	while (stateObject->gameOver == 'f')
 	{
 		
-		draw(&game_param, &snake_var, &fruit_var);
+		//interface
+		
+		draw_map(parameters, stateObject);
+		draw_snake(parameters, snakeObject, fruitObject);
+		draw_fruit(parameters, fruitObject);
+		write_score(stateObject);
+		//Generate the score and the fruit axe
+		generate(parameters, stateObject, snakeObject, fruitObject);
 		Sleep(80);
-		dir = input(&game_param , &dir);
-		logic(&game_param, &snake_var, dir);
+		input(parameters, stateObject, &dir);
+		setInstructions(parameters,  stateObject, snakeObject, &dir);
+	
 
 	}
 	cout << endl;

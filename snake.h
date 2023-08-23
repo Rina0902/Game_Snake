@@ -22,26 +22,27 @@ struct Fruit
 
 struct GameParameters
 {
-
-	int16_t score = 0;
 	int8_t screenWidth;
 	int8_t screenHeight;
-	bool gameOver;
 };
 
+struct State
+{
+	int16_t score = 0;
+	char gameOver = 'f';
+};
 
 //Declaration of functions
 void gotoxy(int x, int y);
-void initializeGame(GameParameters* game, const int screenWidthVariable, const int screenHeightVariable);
-void setup(GameParameters* game_parameter, Snake* snake_variable, Fruit* fruit_variable, eDirection* dir_variable);
-eDirection input(GameParameters* game_parameter, eDirection* dir_variable);
-void logic(GameParameters* game_parameter, Snake* snake_variable, eDirection dir_variable);
-void draw(GameParameters* game_parameter, Snake* snake_variable, Fruit* fruit_variable);
-
-
-
-
-
+void initializeGame( GameParameters* parameters, const int screenWidthVariable, const int screenHeightVariable);
+void setup(GameParameters* parameters, State* stateObject, Snake* snake_variable, Fruit* fruit_variable, eDirection* dir_variable);
+void input(GameParameters* game_parameter, State* stateObject, eDirection* dir_variable);
+void setInstructions(GameParameters* game_parameter, State* stateObject, Snake* snake_variable, eDirection* dir_variable);
+void draw_fruit(GameParameters* game_parameter, Fruit* fruit_variable);
+void draw_snake(GameParameters* game_parameter, Snake* snake_variable, Fruit* fruit_variable);
+void draw_map(GameParameters* game_parameter, State* stateObject);
+void write_score(State* stateObject);
+void generate(GameParameters* game_parameter, State* stateObject, Snake* snake_variable, Fruit* fruit_variable);
 
 
 
