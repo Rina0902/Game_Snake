@@ -38,9 +38,9 @@ void initializeGame( GameParameters* parameters, const int screenWidthVariable, 
 void setup(GameParameters* parameters, State* stateObject, Snake* snake_variable, Fruit* fruit_variable, eDirection* dir_variable);
 void input(GameParameters* game_parameter, State* stateObject, eDirection* dir_variable);
 void setInstructions(GameParameters* game_parameter, State* stateObject, Snake* snake_variable, eDirection* dir_variable);
-void draw_fruit(GameParameters* game_parameter, Fruit* fruit_variable);
-void draw_snake(GameParameters* game_parameter, Snake* snake_variable, Fruit* fruit_variable);
-void draw_map(GameParameters* game_parameter, State* stateObject);
+void draw_fruit(const GameParameters game_parameter, const Fruit fruit_variable);
+void draw_snake(const GameParameters game_parameter, const Snake snake_variable, const Fruit fruit_variable);
+void draw_map(const GameParameters game_parameter,const State stateObject);
 void write_score(State* stateObject);
 void generate(GameParameters* game_parameter, State* stateObject, Snake* snake_variable, Fruit* fruit_variable);
 

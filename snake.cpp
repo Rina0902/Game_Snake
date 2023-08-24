@@ -124,15 +124,15 @@ void setInstructions(GameParameters* game_parameter, State* stateObject, Snake* 
 
 }
 
-void draw_fruit(GameParameters* game_parameter, Fruit* fruit_variable)
+void draw_fruit(const GameParameters game_parameter, const Fruit fruit_variable)
 {
 	char print = 'f';
-	for (int8_t i = 0; i < game_parameter->screenHeight; i++)
+	for (int8_t i = 0; i < game_parameter.screenHeight; i++)
 	{
-		for (int8_t j = 0; j < game_parameter->screenWidth; j++)
+		for (int8_t j = 0; j < game_parameter.screenWidth; j++)
 		{
 			print = 'f';
-			if (i == fruit_variable->fruitY && j == fruit_variable->fruitX)
+			if (i == fruit_variable.fruitY && j == fruit_variable.fruitX)
 			{
 
 				gotoxy(j, i);
@@ -143,16 +143,16 @@ void draw_fruit(GameParameters* game_parameter, Fruit* fruit_variable)
 		}
 	}
 }
-void draw_snake(GameParameters * game_parameter, Snake * snake_variable, Fruit* fruit_variable)
+void draw_snake(const GameParameters game_parameter, const Snake snake_variable, const Fruit fruit_variable)
 {
 
 	char print = 'f';
-	for (int8_t i = 2; i < game_parameter->screenHeight-1; i++)
+	for (int8_t i = 2; i < game_parameter.screenHeight-1; i++)
 	{
-		for (int8_t j = 2; j < game_parameter->screenWidth-1; j++)
+		for (int8_t j = 2; j < game_parameter.screenWidth-1; j++)
 		{
 			print = 'f';
-			if (i == snake_variable->y && j == snake_variable->x)
+			if (i == snake_variable.y && j == snake_variable.x)
 			{
 				gotoxy(j, i);
 				printf("O");
@@ -160,16 +160,16 @@ void draw_snake(GameParameters * game_parameter, Snake * snake_variable, Fruit* 
 
 
 			}
-			else if((print == 'f') && (!(i == fruit_variable->fruitY && j == fruit_variable->fruitX)))
+			else if((print == 'f') && (!(i == fruit_variable.fruitY && j == fruit_variable.fruitX)))
 			{
 				gotoxy(j, i);
 				printf(" ");
 			}
 		
-			for (int k = 0; k < snake_variable->numberTail; k++)
+			for (int k = 0; k < snake_variable.numberTail; k++)
 			{
 
-				if (snake_variable->tailX[k] == j && snake_variable->tailY[k] == i)
+				if (snake_variable.tailX[k] == j && snake_variable.tailY[k] == i)
 				{
 					gotoxy(j, i);
 					printf("o");
@@ -183,25 +183,25 @@ void draw_snake(GameParameters * game_parameter, Snake * snake_variable, Fruit* 
 	}
 }
 
-void draw_map(GameParameters* game_parameter, State* stateObject)
+void draw_map(const GameParameters game_parameter,const State stateObject)
 {
 
 	char print = 'f';
-	for (int8_t i = 0; i < game_parameter->screenHeight; i++)
+	for (int8_t i = 0; i < game_parameter.screenHeight; i++)
 	{
-		for (int8_t j = 0; j < game_parameter->screenWidth; j++)
+		for (int8_t j = 0; j < game_parameter.screenWidth; j++)
 		{
 			print = 'f';
 
 
-			if (i == 1 || (i == game_parameter->screenWidth - 1))
+			if (i == 1 || (i == game_parameter.screenWidth - 1))
 			{
 				gotoxy(j, i);
 				printf("#");
 				print = 't';
 			}
 
-			if (j == 0 || j == game_parameter->screenHeight - 1)
+			if (j == 0 || j == game_parameter.screenHeight - 1)
 			{
 				gotoxy(j, i);
 				printf("#");
