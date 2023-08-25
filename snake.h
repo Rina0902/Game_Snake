@@ -36,12 +36,12 @@ struct State
 void gotoxy(int x, int y);
 void initializeGame( GameParameters* parameters, const int screenWidthVariable, const int screenHeightVariable);
 void setup(GameParameters* parameters, State* stateObject, Snake* snake_variable, Fruit* fruit_variable, eDirection* dir_variable);
-void input(GameParameters* game_parameter, State* stateObject, eDirection* dir_variable);
-void setInstructions(GameParameters* game_parameter, State* stateObject, Snake* snakeObject, eDirection* dir_variable);
-void draw_fruit(const GameParameters game_parameter, const Fruit fruitObject);
-void draw_snake(const GameParameters game_parameter, const Snake snakeObject, const Fruit fruitObject);
-void draw_map(const GameParameters game_parameter,const State stateObject);
-void write_score(State* stateObject);
+void input(State* stateObject, eDirection* dir_variable);
+void setInstructions(const GameParameters& game_parameter, State* stateObject, Snake* snake_variable, const eDirection& dir_variable);
+void draw_fruit(const GameParameters& game_parameter, const Fruit& fruitObject);
+void draw_snake(const GameParameters& game_parameter, const Snake& snakeObject, const Fruit& fruitObject);
+void draw_map(const GameParameters& game_parameter, const State& stateObject);
+void write_score(const State& stateObject);
 void generate(GameParameters* game_parameter, State* stateObject, Snake* snakeObject, Fruit* fruitObject);
 
 
