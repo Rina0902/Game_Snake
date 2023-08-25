@@ -124,7 +124,7 @@ void setInstructions(GameParameters* game_parameter, State* stateObject, Snake* 
 
 }
 
-void draw_fruit(const GameParameters game_parameter, const Fruit fruit_variable)
+void draw_fruit(const GameParameters game_parameter, const Fruit fruitObject)
 {
 	char print = 'f';
 	for (int8_t i = 0; i < game_parameter.screenHeight; i++)
@@ -132,7 +132,7 @@ void draw_fruit(const GameParameters game_parameter, const Fruit fruit_variable)
 		for (int8_t j = 0; j < game_parameter.screenWidth; j++)
 		{
 			print = 'f';
-			if (i == fruit_variable.fruitY && j == fruit_variable.fruitX)
+			if (i == fruitObject.fruitY && j == fruitObject.fruitX)
 			{
 
 				gotoxy(j, i);
@@ -143,7 +143,7 @@ void draw_fruit(const GameParameters game_parameter, const Fruit fruit_variable)
 		}
 	}
 }
-void draw_snake(const GameParameters game_parameter, const Snake snake_variable, const Fruit fruit_variable)
+void draw_snake(const GameParameters game_parameter, const Snake snakeObject, const Fruit fruitObject)
 {
 
 	char print = 'f';
@@ -152,7 +152,7 @@ void draw_snake(const GameParameters game_parameter, const Snake snake_variable,
 		for (int8_t j = 2; j < game_parameter.screenWidth-1; j++)
 		{
 			print = 'f';
-			if (i == snake_variable.y && j == snake_variable.x)
+			if (i == snakeObject.y && j == snakeObject.x)
 			{
 				gotoxy(j, i);
 				printf("O");
@@ -160,16 +160,16 @@ void draw_snake(const GameParameters game_parameter, const Snake snake_variable,
 
 
 			}
-			else if((print == 'f') && (!(i == fruit_variable.fruitY && j == fruit_variable.fruitX)))
+			else if((print == 'f') && (!(i == fruitObject.fruitY && j == fruitObject.fruitX)))
 			{
 				gotoxy(j, i);
 				printf(" ");
 			}
 		
-			for (int k = 0; k < snake_variable.numberTail; k++)
+			for (int k = 0; k < snakeObject.numberTail; k++)
 			{
 
-				if (snake_variable.tailX[k] == j && snake_variable.tailY[k] == i)
+				if (snakeObject.tailX[k] == j && snakeObject.tailY[k] == i)
 				{
 					gotoxy(j, i);
 					printf("o");
@@ -225,16 +225,16 @@ void write_score(State* stateObject)
 	printf("Press X to exit the game. ");
 }
 
-void generate(GameParameters* game_parameter, State* stateObject, Snake* snake_variable, Fruit* fruit_variable)
+void generate(GameParameters* game_parameter, State* stateObject, Snake* snakeObject, Fruit* fruitObject)
 {
-	if (((snake_variable->x) == fruit_variable->fruitX) && ((snake_variable->y) == fruit_variable->fruitY))
+	if (((snakeObject->x) == fruitObject->fruitX) && ((snakeObject->y) == fruitObject->fruitY))
 	{
 
 		cout << endl;
-		fruit_variable->fruitX = rand() % (game_parameter->screenWidth - 1) + 1;
-		fruit_variable->fruitY = rand() % (game_parameter->screenHeight - 1) + 2;
+		fruitObject->fruitX = rand() % (game_parameter->screenWidth - 1) + 1;
+		fruitObject->fruitY = rand() % (game_parameter->screenHeight - 1) + 2;
 		stateObject->score = stateObject->score + 10;
-		snake_variable->numberTail = snake_variable->numberTail + 1;
+		snakeObject->numberTail = snakeObject->numberTail + 1;
 
 	}
 }

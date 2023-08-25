@@ -4,6 +4,12 @@ GameParameters parameters ;
 Snake snakeObject;
 Fruit fruitObject;
 State stateObject;
+
+const GameParameters& ref_parameters = parameters;
+const Snake& ref_snakeObject = snakeObject;
+const Fruit& ref_fruitObject = fruitObject;
+const State& ref_stateObject = stateObject;
+
 enum eDirection dir;
 
 
@@ -18,9 +24,9 @@ int main()
 		
 		//interface
 		
-		draw_map(parameters, stateObject);
-		draw_snake(parameters, snakeObject, fruitObject);
-		draw_fruit(parameters, fruitObject);
+		draw_map(ref_parameters, ref_stateObject);
+		draw_snake(ref_parameters, ref_snakeObject, ref_fruitObject);
+		draw_fruit(ref_parameters, ref_fruitObject);
 		write_score(&stateObject);
 		//Generate the score and the fruit axe
 		generate(&parameters, &stateObject, &snakeObject, &fruitObject);
