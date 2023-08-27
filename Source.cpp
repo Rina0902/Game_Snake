@@ -1,39 +1,44 @@
 #include "snake.h"
 
+#define SCREENWIDTH 20
+#define SCREENHEIGHT 20
+
 GameParameters parameters ;
 Snake snakeObject;
 Fruit fruitObject;
 State stateObject;
 
-enum eDirection dir;
+enum eDirection direction = STOP;
 
 
 int main()
 {
+	//init
+	init_game_parameters(&parameters, SCREENWIDTH, SCREENHEIGHT);
+	init(parameters, &stateObject, &snakeObject, &fruitObject);
 
-	initializeGame(&parameters, 20, 20);
-	setup(&parameters, &stateObject, &snakeObject, &fruitObject, &dir);
-	
+
 	while (stateObject.gameOver == 'f')
 	{
 		
-		//interface
-		
-		draw_map(parameters, stateObject);
-		draw_snake(parameters, snakeObject, fruitObject);
-		draw_fruit(parameters, fruitObject);
-		write_score(stateObject);
-		//Generate the score and the fruit axe
-		generate(&parameters, &stateObject, &snakeObject, &fruitObject);
+		display_map(parameters, stateObject);
+		display_snake(parameters, snakeObject, fruitObject);
+		display_fruit(parameters, fruitObject);
+		display_score(stateObject);
+
+		//If the snake eats the fruit
+		stateObject =  generate_score(stateObject,snakeObject,fruitObject);
+		fruitObject =  generate_fruit(parameters, snakeObject, fruitObject);
+		snakeObject = add_tail_number(snakeObject, fruitObject);
+
 		Sleep(80);
-		input(&stateObject, &dir);
-		setInstructions(parameters,  &stateObject, &snakeObject, dir);
+
+		direction = input(&stateObject, direction);
+		set_instructions(parameters,  &stateObject, &snakeObject, direction);
 	
-
 	}
-	cout << endl;
-	cout << endl;
+	
 	cout << "Game Over!" << endl;
-
+	
 	return 0;
 }
