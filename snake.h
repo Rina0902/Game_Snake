@@ -50,7 +50,7 @@ void set_instructions(const GameParameters& game_parameter, State* stateObject, 
 void display_fruit(const GameParameters& game_parameter, const Fruit& fruitObject);
 void display_snake(const GameParameters& game_parameter, const Snake& snakeObject, const Fruit& fruitObject);
 void display_map(const GameParameters& game_parameter, const State& stateObject);
-void display_score(const State& stateObject);
+void display_score(const GameParameters& game_parameter, const State& stateObject);
 
 //If the snake eats the fruit
 State generate_score(State stateObject, Snake snakeObject, Fruit fruitObject);

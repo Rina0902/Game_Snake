@@ -205,13 +205,13 @@ void display_map(const GameParameters& game_parameter,const State& stateObject)
 	}
 }
 
-void display_score(const State& stateObject)
+void display_score(const GameParameters& game_parameter, const State& stateObject)
 {
 	cout << endl;
-	gotoxy(0, 21);
+	gotoxy(0, game_parameter.screenHeight + 1);
 	printf("Your Score is : ");
 	cout << stateObject.score << endl;
-	gotoxy(0, 23);
+	gotoxy(0, game_parameter.screenHeight + 3);
 	printf("Press X to exit the game.\n \n");
 }
 
