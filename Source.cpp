@@ -14,7 +14,15 @@ State stateObject;
 
 enum eDirection direction = STOP;
 
-int frame = 0;
+double clockToMilliseconds(clock_t ticks) {
+	
+	return (ticks / (double)CLOCKS_PER_SEC) * 1000.0;
+}
+
+clock_t deltaTime = 0;
+unsigned int frames = 0;
+double  frameRate = 60;
+double  averageFrameTimeMilliseconds = 16.67;
 
 
 int main()
@@ -24,23 +32,20 @@ int main()
 	init_game_parameters(&parameters, SCREENWIDTH, SCREENHEIGHT);
 	init(parameters, &stateObject, &snakeObject, &fruitObject);
 
-	std::chrono::high_resolution_clock::time_point prev =
-		std::chrono::high_resolution_clock::now();
-	std::chrono::high_resolution_clock::time_point current =
-		std::chrono::high_resolution_clock::now();
+	
 
 	while (stateObject.gameOver == 'f')
 	{
-		current = std::chrono::high_resolution_clock::now();
 		
-	
+		
+		clock_t beginFrame = clock();
 		
 		display_map(parameters, stateObject);
 		display_snake(parameters, snakeObject, fruitObject);
 		display_fruit(parameters, fruitObject);
 		display_score(parameters, stateObject);
 		
-		
+		clock_t endFrame = clock();
 
 		//If the snake eats the fruit
 		stateObject = generate_score(stateObject, snakeObject, fruitObject);
@@ -51,19 +56,26 @@ int main()
 
 		direction = input(&stateObject, direction);
 		set_instructions(parameters, &stateObject, &snakeObject, direction);
+		
+		deltaTime += endFrame - beginFrame;
+		
+		frames++;
 
-		if (std::chrono::duration_cast<std::chrono::microseconds>(current - prev).count() >= 16000) {
-			prev = current;
-			frame++;
-			std::cout <<"Frame = " << frame << std::endl;
-		}
-		else {
+		//if you really want FPS
+		if (clockToMilliseconds(deltaTime) > 1000.0) { //every second
+			frameRate = (double)frames * 0.5 + frameRate * 0.5; //more stable
+			frames = 0;
+			deltaTime -= CLOCKS_PER_SEC;
+			cout << "deltaTime was:" << deltaTime << endl;
+			averageFrameTimeMilliseconds = 1000.0 / (frameRate == 0 ? 0.001 : frameRate);
 			
-		
-			//Sleep(chrono::microseconds(1));
+
+			
+			cout << "Frame time was:" << averageFrameTimeMilliseconds << endl;
+			
 		}
-	
 		
+		Sleep(frameRate);
 	}
 	
 	cout << "Game Over!" << endl;
