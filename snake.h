@@ -10,14 +10,14 @@ enum eDirection { STOP = 0, LEFT , RIGHT , UP , DOWN };
 
 struct Snake
 {
-	int8_t x = 0, y = 0;
+	float x = 0, y = 0;
 	int8_t numberTail = 0;
 	int8_t tailX[100] , tailY[100];
 };
 
 struct Fruit
 {
-	int8_t fruitX = 0, fruitY = 0;
+	float fruitX = 0.0, fruitY = 0.0;
 };
 
 struct GameParameters
