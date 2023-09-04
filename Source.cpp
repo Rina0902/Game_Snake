@@ -9,6 +9,7 @@ using namespace std::chrono;
 
 GameParameters parameters ;
 Snake snakeObject;
+Snake aiSnakeObject;
 Fruit fruitObject;
 State stateObject;
 
@@ -30,8 +31,10 @@ int main()
 	
 	//init
 	init_game_parameters(&parameters, SCREENWIDTH, SCREENHEIGHT);
-	init(parameters, &stateObject, &snakeObject, &fruitObject);
-
+	init_snake(parameters, &snakeObject);
+	init_state(&stateObject);
+	init_fruit(parameters,&fruitObject);
+	cout << "snakeObject = " << snakeObject.numberTail << endl;
 	
 
 	while (stateObject.gameOver == 'f')
@@ -49,13 +52,14 @@ int main()
 
 		//If the snake eats the fruit
 		stateObject = generate_score(stateObject, snakeObject, fruitObject);
+		add_tail_number(&snakeObject, fruitObject);
 		fruitObject = generate_fruit(parameters, snakeObject, fruitObject);
-		snakeObject = add_tail_number(snakeObject, fruitObject);
-
-
-
+	
+	
+		
 		direction = input(&stateObject, direction);
 		set_instructions(parameters, &stateObject, &snakeObject, direction);
+		Sleep(frameRate*2);
 		
 		deltaTime += endFrame - beginFrame;
 		
@@ -75,7 +79,7 @@ int main()
 			
 		}
 		
-		Sleep(frameRate);
+		
 	}
 	
 	cout << "Game Over!" << endl;
