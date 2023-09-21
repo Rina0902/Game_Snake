@@ -1,7 +1,6 @@
 #include "snake.h"
 
 
-
 void gotoxy(int x, int y)
 {
 	printf("%c[%d;%df", 0x1B, y, x);
@@ -16,7 +15,7 @@ void init_game_parameters(GameParameters* parameters, const int screenWidthVaria
 void init_snake(const GameParameters& game_parameter, Snake* snake_variable)
 {
 	snake_variable->x = rand() % game_parameter.screenWidth + 1;
-	snake_variable->y = rand() % game_parameter.screenHeight + 1;
+	snake_variable->y = rand() % game_parameter.screenHeight + 2;
 	snake_variable->numberTail = 0;
 }
 
@@ -33,7 +32,6 @@ void init_fruit(const GameParameters & game_parameter, Fruit * fruit_variable)
 	fruit_variable->fruitX = rand() % game_parameter.screenWidth + 1;
 	fruit_variable->fruitY = rand() % game_parameter.screenHeight + 2;
 }
-
 
 
 
@@ -153,7 +151,7 @@ void display_fruit(const GameParameters& game_parameter, const Fruit& fruitObjec
 		}
 	}
 }
-void display_snake(const GameParameters& game_parameter, const Snake& snakeObject, const Fruit& fruitObject)
+void display_snake(const GameParameters& game_parameter, const Snake& snakeObject, const Fruit& fruitObject, const Snake& aiSnakeObject)
 {
 
 	char print = 'f';
@@ -167,6 +165,18 @@ void display_snake(const GameParameters& game_parameter, const Snake& snakeObjec
 				gotoxy(j, i);
 				printf("O");
 				print = 't';
+
+
+			}
+			else if (i == aiSnakeObject.y && j == aiSnakeObject.x)
+			{
+				if ((0 < aiSnakeObject.y < 20) && (0 < aiSnakeObject.x < 20))
+				{
+					gotoxy(j, i);
+					printf("X");
+					print = 't';
+				}
+
 
 
 			}
@@ -244,7 +254,7 @@ Fruit generate_fruit(const GameParameters& game_parameter,const Snake& snakeObje
 	{
 		
 		fruitObject.fruitX = rand() % (game_parameter.screenWidth - 1) + 1;
-		fruitObject.fruitY = rand() % (game_parameter.screenHeight - 1) + 2;
+		fruitObject.fruitY = rand() % (game_parameter.screenHeight - 1) + 1;
 		
 	}
 	return fruitObject;
@@ -257,5 +267,86 @@ void add_tail_number(Snake* snakeObject, const Fruit& fruitObject)
 	{
 		snakeObject->numberTail ++;
 	}
+
+}
+
+void move_aiSnake(Snake* snakeObject, eDirection* dir_variable)
+{
+
+	*dir_variable = static_cast<eDirection>(rand() % DOWN);
+	int8_t previousValueX = snakeObject->tailX[0];
+	int8_t previousValueY = snakeObject->tailY[0];
+	int8_t previousValue2X, previousValue2Y;
+	snakeObject->tailX[0] = snakeObject->x;
+	snakeObject->tailY[0] = snakeObject->y;
+	for (int8_t i = 1; i < snakeObject->numberTail; i++)
+	{
+		previousValue2X = snakeObject->tailX[i];
+		previousValue2Y = snakeObject->tailY[i];
+		snakeObject->tailX[i] = previousValueX;
+		snakeObject->tailY[i] = previousValueY;
+		previousValueX = previousValue2X;
+		previousValueY = previousValue2Y;
+	}
+	bool var = (0 > snakeObject->y || snakeObject->y >= 20);
+	cout << "var = " << var << endl;
+	switch (*dir_variable)
+	{
+	case UP:
+		snakeObject->y--;
+		if (0 > snakeObject->y || snakeObject->y >= 20)
+		{
+
+			snakeObject->y++;
+		}
+		snakeObject->y++;
+		break;
+
+	case LEFT:
+		snakeObject->x--;
+		if (0 > snakeObject->x && snakeObject->x >= 20)
+		{
+			snakeObject->x++;
+		}
+		if ((snakeObject->x == 21) || (snakeObject->x == 20))
+		{
+			snakeObject->x = snakeObject->x - 2;
+		}
+		break;
+
+
+
+	case RIGHT:
+		snakeObject->x++;
+		if (0 > snakeObject->x && snakeObject->x >= 20)
+		{
+			snakeObject->x--;
+		}
+		if ((snakeObject->x == 21) || (snakeObject->x == 20))
+		{
+			snakeObject->x = snakeObject->x - 2;
+		}
+		break;
+
+
+	case DOWN:
+		snakeObject->y++;
+		if (1 > snakeObject->y && snakeObject->y >= 20)
+		{
+			snakeObject->y--;
+
+		}
+		break;
+
+
+
+	default:
+		break;
+
+	}
+
+
+
+
 
 }

@@ -14,6 +14,7 @@ Fruit fruitObject;
 State stateObject;
 
 enum eDirection direction = STOP;
+enum eDirection aiDirection = STOP;
 
 double clockToMilliseconds(clock_t ticks) {
 	
@@ -32,9 +33,10 @@ int main()
 	//init
 	init_game_parameters(&parameters, SCREENWIDTH, SCREENHEIGHT);
 	init_snake(parameters, &snakeObject);
+	init_snake(parameters, &aiSnakeObject);
 	init_state(&stateObject);
 	init_fruit(parameters,&fruitObject);
-	cout << "snakeObject = " << snakeObject.numberTail << endl;
+	cout << "snakeObject = " << aiSnakeObject.x << endl;
 	
 
 	while (stateObject.gameOver == 'f')
@@ -42,10 +44,11 @@ int main()
 		clock_t beginFrame = clock();
 		
 		display_map(parameters, stateObject);
-		display_snake(parameters, snakeObject, fruitObject);
+		display_snake(parameters, snakeObject, fruitObject, aiSnakeObject);
 		display_fruit(parameters, fruitObject);
 		display_score(parameters, stateObject);
 		
+
 		clock_t endFrame = clock();
 
 		//If the snake eats the fruit
@@ -53,6 +56,8 @@ int main()
 		add_tail_number(&snakeObject, fruitObject);
 		fruitObject = generate_fruit(parameters, snakeObject, fruitObject);
 	
+		move_aiSnake(&aiSnakeObject, &aiDirection);
+
 		direction = input(&stateObject, direction);
 		set_instructions(parameters, &stateObject, &snakeObject, direction);
 		Sleep(frameRate*2);
