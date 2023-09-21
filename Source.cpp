@@ -39,8 +39,6 @@ int main()
 
 	while (stateObject.gameOver == 'f')
 	{
-		
-		
 		clock_t beginFrame = clock();
 		
 		display_map(parameters, stateObject);
@@ -55,8 +53,6 @@ int main()
 		add_tail_number(&snakeObject, fruitObject);
 		fruitObject = generate_fruit(parameters, snakeObject, fruitObject);
 	
-	
-		
 		direction = input(&stateObject, direction);
 		set_instructions(parameters, &stateObject, &snakeObject, direction);
 		Sleep(frameRate*2);
@@ -72,8 +68,6 @@ int main()
 			deltaTime -= CLOCKS_PER_SEC;
 			cout << "deltaTime was:" << deltaTime << endl;
 			averageFrameTimeMilliseconds = 1000.0 / (frameRate == 0 ? 0.001 : frameRate);
-			
-
 			
 			cout << "Frame time was:" << averageFrameTimeMilliseconds << endl;
 			
