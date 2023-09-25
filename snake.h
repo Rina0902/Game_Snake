@@ -6,13 +6,13 @@
 
 using namespace std;
 
-enum eDirection { STOP = 0, LEFT , RIGHT , UP , DOWN };
+enum eDirection { STOP = 0, LEFT, RIGHT, UP, DOWN };
 
 struct Snake
 {
 	float x = 0.0, y = 0.0;
 	int8_t numberTail = 0;
-	int8_t tailX[100] , tailY[100];
+	int8_t tailX[100], tailY[100];
 };
 
 struct Fruit
@@ -22,8 +22,8 @@ struct Fruit
 
 struct GameParameters
 {
-	int8_t screenWidth ;
-	int8_t screenHeight ;
+	int8_t screenWidth;
+	int8_t screenHeight;
 };
 
 struct State
@@ -34,7 +34,7 @@ struct State
 
 //Declaration of functions
 void gotoxy(int x, int y);
-void init_game_parameters( GameParameters* parameters, const int screenWidthVariable, const int screenHeightVariable);
+void init_game_parameters(GameParameters* parameters, const int screenWidthVariable, const int screenHeightVariable);
 
 
 //setup
@@ -52,9 +52,11 @@ void display_map(const GameParameters& game_parameter, const State& stateObject)
 void display_score(const GameParameters& game_parameter, const State& stateObject);
 
 //If the snake eats the fruit
-State generate_score(State stateObject,const Snake& snakeObject,const Fruit& fruitObject);
-Fruit generate_fruit(const GameParameters& game_parameter,const Snake& snakeObject, Fruit fruitObject);
+State generate_score(State stateObject, const Snake& snakeObject, const Fruit& fruitObject);
+Fruit generate_fruit(const GameParameters& game_parameter, const Snake& snakeObject, Fruit fruitObject, const Snake& aiSnakeObject);
 void add_tail_number(Snake* snakeObject, const Fruit& fruitObject);
 
 
-void move_aiSnake(Snake* snakeObject, eDirection* dir_variable);
+//Ai Snake movement
+void move_aiSnake(Snake* snakeObject, eDirection* dir_variable, const Fruit& fruitObject);
+

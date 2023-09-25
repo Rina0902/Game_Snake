@@ -9,7 +9,7 @@ void gotoxy(int x, int y)
 void init_game_parameters(GameParameters* parameters, const int screenWidthVariable, const int screenHeightVariable)
 {
 	parameters->screenWidth = screenWidthVariable;
-	parameters->screenHeight = screenHeightVariable;	
+	parameters->screenHeight = screenHeightVariable;
 }
 
 void init_snake(const GameParameters& game_parameter, Snake* snake_variable)
@@ -21,16 +21,21 @@ void init_snake(const GameParameters& game_parameter, Snake* snake_variable)
 
 void init_state(State* stateObject)
 {
-	
+
 	stateObject->gameOver = 'f';
 	stateObject->score = 0;
 }
 
-void init_fruit(const GameParameters & game_parameter, Fruit * fruit_variable)
+void init_fruit(const GameParameters& game_parameter, Fruit* fruit_variable)
 {
 
-	fruit_variable->fruitX = rand() % game_parameter.screenWidth + 1;
-	fruit_variable->fruitY = rand() % game_parameter.screenHeight + 2;
+	fruit_variable->fruitX = (rand() % game_parameter.screenWidth - 1);
+	if ((fruit_variable->fruitX == 0) || (fruit_variable->fruitX == 1))
+		fruit_variable->fruitX = fruit_variable->fruitX + 3;
+
+	fruit_variable->fruitY = (rand() % game_parameter.screenHeight - 1);
+	if ((fruit_variable->fruitY == 0) || (fruit_variable->fruitY == 1))
+		fruit_variable->fruitY = fruit_variable->fruitY + 3;
 }
 
 
@@ -59,7 +64,7 @@ eDirection input(State* stateObject, eDirection dir_variable)
 			break;
 		case 'd':
 		case 'D':
-		
+
 			dir_variable = RIGHT;
 			break;
 		case 's':
@@ -77,9 +82,9 @@ eDirection input(State* stateObject, eDirection dir_variable)
 	return dir_variable;
 }
 
-void set_instructions(const GameParameters& game_parameter, State* stateObject, Snake* snake_variable,const eDirection& dir_variable)
+void set_instructions(const GameParameters& game_parameter, State* stateObject, Snake* snake_variable, const eDirection& dir_variable)
 {
-	int8_t previousValueX = snake_variable->tailX[0]; 
+	int8_t previousValueX = snake_variable->tailX[0];
 	int8_t previousValueY = snake_variable->tailY[0];
 	int8_t previousValue2X, previousValue2Y;
 	snake_variable->tailX[0] = snake_variable->x;
@@ -93,27 +98,27 @@ void set_instructions(const GameParameters& game_parameter, State* stateObject, 
 		previousValueX = previousValue2X;
 		previousValueY = previousValue2Y;
 	}
-	
+
 	switch (dir_variable)
 	{
 	case UP:
-		
-		snake_variable->y --;
+
+		snake_variable->y--;
 		break;
 
 	case LEFT:
-		snake_variable->x --;
-	
+		snake_variable->x--;
+
 		break;
 
 	case RIGHT:
-		snake_variable->x ++;
-	
+		snake_variable->x++;
+
 		break;
 
 	case DOWN:
-		snake_variable->y ++;
-	
+		snake_variable->y++;
+
 		break;
 	default:
 		break;
@@ -121,7 +126,7 @@ void set_instructions(const GameParameters& game_parameter, State* stateObject, 
 	}
 	if ((snake_variable->x > game_parameter.screenWidth - 2 || snake_variable->x < 2) || (snake_variable->y > game_parameter.screenHeight - 2 || snake_variable->y < 2))
 		stateObject->gameOver = 't';
-		
+
 
 	for (int8_t i = 0; i < snake_variable->numberTail; i++)
 	{
@@ -134,18 +139,15 @@ void set_instructions(const GameParameters& game_parameter, State* stateObject, 
 
 void display_fruit(const GameParameters& game_parameter, const Fruit& fruitObject)
 {
-	char print = 'f';
 	for (int8_t i = 0; i < game_parameter.screenHeight; i++)
 	{
 		for (int8_t j = 0; j < game_parameter.screenWidth; j++)
 		{
-			print = 'f';
 			if (i == fruitObject.fruitY && j == fruitObject.fruitX)
 			{
 
 				gotoxy(j, i);
 				printf("*");
-
 			}
 
 		}
@@ -155,9 +157,9 @@ void display_snake(const GameParameters& game_parameter, const Snake& snakeObjec
 {
 
 	char print = 'f';
-	for (int8_t i = 2; i < game_parameter.screenHeight-1; i++)
+	for (int8_t i = 2; i < game_parameter.screenHeight - 1; i++)
 	{
-		for (int8_t j = 2; j < game_parameter.screenWidth-1; j++)
+		for (int8_t j = 2; j < game_parameter.screenWidth - 1; j++)
 		{
 			print = 'f';
 			if (i == snakeObject.y && j == snakeObject.x)
@@ -180,12 +182,13 @@ void display_snake(const GameParameters& game_parameter, const Snake& snakeObjec
 
 
 			}
-			else if((print == 'f') && (!(i == fruitObject.fruitY && j == fruitObject.fruitX)))
+
+			else if ((print == 'f') && (!(i == fruitObject.fruitY && j == fruitObject.fruitX)))
 			{
 				gotoxy(j, i);
 				printf(" ");
 			}
-			
+
 			for (int k = 0; k < snakeObject.numberTail; k++)
 			{
 				gotoxy(0, 27);
@@ -196,12 +199,14 @@ void display_snake(const GameParameters& game_parameter, const Snake& snakeObjec
 					printf("o");
 					print = 't';
 				}
-			}	
+			}
+
+
 		}
 	}
 }
 
-void display_map(const GameParameters& game_parameter,const State& stateObject)
+void display_map(const GameParameters& game_parameter, const State& stateObject)
 {
 	char print = 'f';
 	for (int8_t i = 0; i < game_parameter.screenHeight; i++)
@@ -238,7 +243,7 @@ void display_score(const GameParameters& game_parameter, const State& stateObjec
 	printf("Press X to exit the game.\n \n");
 }
 
-State generate_score(State stateObject,const Snake& snakeObject,const Fruit& fruitObject)
+State generate_score(State stateObject, const Snake& snakeObject, const Fruit& fruitObject)
 {
 	if (((snakeObject.x) == fruitObject.fruitX) && ((snakeObject.y) == fruitObject.fruitY))
 	{
@@ -247,15 +252,16 @@ State generate_score(State stateObject,const Snake& snakeObject,const Fruit& fru
 	return stateObject;
 }
 
-Fruit generate_fruit(const GameParameters& game_parameter,const Snake& snakeObject, Fruit fruitObject)
+Fruit generate_fruit(const GameParameters& game_parameter, const Snake& snakeObject, Fruit fruitObject, const Snake& aiSnakeObject)
 {
-	
-	if (((snakeObject.x) == fruitObject.fruitX) && ((snakeObject.y) == fruitObject.fruitY))
+
+	if (((snakeObject.x) == fruitObject.fruitX) && ((snakeObject.y) == fruitObject.fruitY) ||
+		((aiSnakeObject.x) == fruitObject.fruitX) && ((aiSnakeObject.y) == fruitObject.fruitY))
 	{
-		
-		fruitObject.fruitX = rand() % (game_parameter.screenWidth - 1) + 1;
-		fruitObject.fruitY = rand() % (game_parameter.screenHeight - 1) + 1;
-		
+
+		fruitObject.fruitX = (rand() % (game_parameter.screenWidth - 1));
+		fruitObject.fruitY = (rand() % (game_parameter.screenHeight - 1));
+
 	}
 	return fruitObject;
 }
@@ -265,15 +271,16 @@ void add_tail_number(Snake* snakeObject, const Fruit& fruitObject)
 
 	if (((snakeObject->x) == fruitObject.fruitX) && ((snakeObject->y) == fruitObject.fruitY))
 	{
-		snakeObject->numberTail ++;
+		snakeObject->numberTail++;
 	}
 
 }
 
-void move_aiSnake(Snake* snakeObject, eDirection* dir_variable)
+
+void move_aiSnake(Snake* snakeObject, eDirection* dir_variable, const Fruit& fruitObject)
 {
 
-	*dir_variable = static_cast<eDirection>(rand() % DOWN);
+	*dir_variable = static_cast<eDirection>(rand() % 5);
 	int8_t previousValueX = snakeObject->tailX[0];
 	int8_t previousValueY = snakeObject->tailY[0];
 	int8_t previousValue2X, previousValue2Y;
@@ -288,65 +295,34 @@ void move_aiSnake(Snake* snakeObject, eDirection* dir_variable)
 		previousValueX = previousValue2X;
 		previousValueY = previousValue2Y;
 	}
-	bool var = (0 > snakeObject->y || snakeObject->y >= 20);
-	cout << "var = " << var << endl;
+
 	switch (*dir_variable)
 	{
 	case UP:
-		snakeObject->y--;
-		if (0 > snakeObject->y || snakeObject->y >= 20)
-		{
-
-			snakeObject->y++;
-		}
-		snakeObject->y++;
+		if (fruitObject.fruitY < snakeObject->y)
+			snakeObject->y--;
 		break;
 
 	case LEFT:
-		snakeObject->x--;
-		if (0 > snakeObject->x && snakeObject->x >= 20)
-		{
-			snakeObject->x++;
-		}
-		if ((snakeObject->x == 21) || (snakeObject->x == 20))
-		{
-			snakeObject->x = snakeObject->x - 2;
-		}
+		if (fruitObject.fruitX < snakeObject->x)
+			snakeObject->x--;
+
 		break;
-
-
 
 	case RIGHT:
-		snakeObject->x++;
-		if (0 > snakeObject->x && snakeObject->x >= 20)
-		{
-			snakeObject->x--;
-		}
-		if ((snakeObject->x == 21) || (snakeObject->x == 20))
-		{
-			snakeObject->x = snakeObject->x - 2;
-		}
-		break;
-
+		if (fruitObject.fruitX > snakeObject->x)
+			snakeObject->x++;
 
 	case DOWN:
-		snakeObject->y++;
-		if (1 > snakeObject->y && snakeObject->y >= 20)
-		{
-			snakeObject->y--;
 
-		}
+		if (fruitObject.fruitY > snakeObject->y)
+			snakeObject->y++;
 		break;
-
-
 
 	default:
 		break;
 
 	}
-
-
-
 
 
 }
