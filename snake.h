@@ -3,6 +3,7 @@
 #include <conio.h>
 #include <iostream>
 #include <windows.h>
+#include <vector>
 
 using namespace std;
 
@@ -47,8 +48,8 @@ eDirection input(State* stateObject, eDirection dir_variable);
 void set_instructions(const GameParameters& game_parameter, State* stateObject, Snake* snake_variable, const eDirection& dir_variable);
 
 void display_fruit(const GameParameters& game_parameter, const Fruit& fruitObject);
-void display_snake(const GameParameters& game_parameter, const Snake& snakeObject, const Fruit& fruitObject, const Snake& aiSnakeObject);
-void display_map(const GameParameters& game_parameter, const State& stateObject);
+vector<vector<int>> display_snake(const GameParameters& game_parameter, const Snake& snakeObject, const Fruit& fruitObject, const Snake& aiSnakeObject, vector<vector<int>> map_vector);
+vector<vector<int>> display_map(const GameParameters& game_parameter, const State& stateObject, vector<vector<int>> map_vector);
 void display_score(const GameParameters& game_parameter, const State& stateObject);
 
 //If the snake eats the fruit
@@ -57,6 +58,5 @@ Fruit generate_fruit(const GameParameters& game_parameter, const Snake& snakeObj
 void add_tail_number(Snake* snakeObject, const Fruit& fruitObject);
 
 
-//Ai Snake movement
-void move_aiSnake(Snake* snakeObject, eDirection* dir_variable, const Fruit& fruitObject);
+
 

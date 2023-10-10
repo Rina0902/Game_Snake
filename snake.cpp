@@ -1,4 +1,4 @@
-#include "snake.h"
+#include "Snake.h"
 
 
 void gotoxy(int x, int y)
@@ -21,24 +21,15 @@ void init_snake(const GameParameters& game_parameter, Snake* snake_variable)
 
 void init_state(State* stateObject)
 {
-
 	stateObject->gameOver = 'f';
 	stateObject->score = 0;
 }
 
 void init_fruit(const GameParameters& game_parameter, Fruit* fruit_variable)
 {
-
-	fruit_variable->fruitX = (rand() % game_parameter.screenWidth - 1);
-	if ((fruit_variable->fruitX == 0) || (fruit_variable->fruitX == 1))
-		fruit_variable->fruitX = fruit_variable->fruitX + 3;
-
-	fruit_variable->fruitY = (rand() % game_parameter.screenHeight - 1);
-	if ((fruit_variable->fruitY == 0) || (fruit_variable->fruitY == 1))
-		fruit_variable->fruitY = fruit_variable->fruitY + 3;
+	fruit_variable->fruitX = (rand() % (game_parameter.screenWidth - 1)) + 1;
+	fruit_variable->fruitY = (rand() % (game_parameter.screenHeight - 1)) + 1;
 }
-
-
 
 eDirection input(State* stateObject, eDirection dir_variable)
 {
@@ -136,12 +127,11 @@ void set_instructions(const GameParameters& game_parameter, State* stateObject, 
 
 }
 
-
 void display_fruit(const GameParameters& game_parameter, const Fruit& fruitObject)
 {
-	for (int8_t i = 0; i < game_parameter.screenHeight; i++)
+	for (int8_t i = 1; i < game_parameter.screenHeight; i++)
 	{
-		for (int8_t j = 0; j < game_parameter.screenWidth; j++)
+		for (int8_t j = 1; j < game_parameter.screenWidth; j++)
 		{
 			if (i == fruitObject.fruitY && j == fruitObject.fruitX)
 			{
@@ -149,13 +139,12 @@ void display_fruit(const GameParameters& game_parameter, const Fruit& fruitObjec
 				gotoxy(j, i);
 				printf("*");
 			}
-
 		}
 	}
 }
-void display_snake(const GameParameters& game_parameter, const Snake& snakeObject, const Fruit& fruitObject, const Snake& aiSnakeObject)
+vector<vector<int>> display_snake(const GameParameters& game_parameter, const Snake& snakeObject,
+	const Fruit& fruitObject, const Snake& aiSnakeObject, vector<vector<int>> map_vector)
 {
-
 	char print = 'f';
 	for (int8_t i = 2; i < game_parameter.screenHeight - 1; i++)
 	{
@@ -178,15 +167,13 @@ void display_snake(const GameParameters& game_parameter, const Snake& snakeObjec
 					printf("X");
 					print = 't';
 				}
-
-
-
 			}
 
 			else if ((print == 'f') && (!(i == fruitObject.fruitY && j == fruitObject.fruitX)))
 			{
 				gotoxy(j, i);
 				printf(" ");
+				map_vector[j][i] = 0;
 			}
 
 			for (int k = 0; k < snakeObject.numberTail; k++)
@@ -204,9 +191,10 @@ void display_snake(const GameParameters& game_parameter, const Snake& snakeObjec
 
 		}
 	}
+	return map_vector;
 }
 
-void display_map(const GameParameters& game_parameter, const State& stateObject)
+vector<vector<int>> display_map(const GameParameters& game_parameter, const State& stateObject, vector<vector<int>> map_vector)
 {
 	char print = 'f';
 	for (int8_t i = 0; i < game_parameter.screenHeight; i++)
@@ -216,21 +204,27 @@ void display_map(const GameParameters& game_parameter, const State& stateObject)
 			print = 'f';
 
 
-			if (i == 1 || (i == game_parameter.screenWidth - 1))
+			if (i == 0 || (i == game_parameter.screenWidth - 1))
 			{
+				map_vector[j][i] = 1;
 				gotoxy(j, i);
 				printf("#");
 				print = 't';
 			}
 
-			if (j == 0 || j == game_parameter.screenHeight - 1)
+			if (j == 0 || (j == game_parameter.screenHeight - 1))
 			{
+				map_vector[j][i] = 1;
 				gotoxy(j, i);
 				printf("#");
 				print = 't';
 			}
+
 		}
+
+
 	}
+	return map_vector;
 }
 
 void display_score(const GameParameters& game_parameter, const State& stateObject)
@@ -263,6 +257,10 @@ Fruit generate_fruit(const GameParameters& game_parameter, const Snake& snakeObj
 		fruitObject.fruitY = (rand() % (game_parameter.screenHeight - 1));
 
 	}
+	if (fruitObject.fruitY == 1)
+		fruitObject.fruitY++;
+	if (fruitObject.fruitX == 1)
+		fruitObject.fruitX++;
 	return fruitObject;
 }
 
@@ -273,56 +271,5 @@ void add_tail_number(Snake* snakeObject, const Fruit& fruitObject)
 	{
 		snakeObject->numberTail++;
 	}
-
-}
-
-
-void move_aiSnake(Snake* snakeObject, eDirection* dir_variable, const Fruit& fruitObject)
-{
-
-	*dir_variable = static_cast<eDirection>(rand() % 5);
-	int8_t previousValueX = snakeObject->tailX[0];
-	int8_t previousValueY = snakeObject->tailY[0];
-	int8_t previousValue2X, previousValue2Y;
-	snakeObject->tailX[0] = snakeObject->x;
-	snakeObject->tailY[0] = snakeObject->y;
-	for (int8_t i = 1; i < snakeObject->numberTail; i++)
-	{
-		previousValue2X = snakeObject->tailX[i];
-		previousValue2Y = snakeObject->tailY[i];
-		snakeObject->tailX[i] = previousValueX;
-		snakeObject->tailY[i] = previousValueY;
-		previousValueX = previousValue2X;
-		previousValueY = previousValue2Y;
-	}
-
-	switch (*dir_variable)
-	{
-	case UP:
-		if (fruitObject.fruitY < snakeObject->y)
-			snakeObject->y--;
-		break;
-
-	case LEFT:
-		if (fruitObject.fruitX < snakeObject->x)
-			snakeObject->x--;
-
-		break;
-
-	case RIGHT:
-		if (fruitObject.fruitX > snakeObject->x)
-			snakeObject->x++;
-
-	case DOWN:
-
-		if (fruitObject.fruitY > snakeObject->y)
-			snakeObject->y++;
-		break;
-
-	default:
-		break;
-
-	}
-
 
 }
